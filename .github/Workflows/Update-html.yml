@@ -1,0 +1,38 @@
+name: Update HTML in /docs
+ 
+on:
+  schedule:
+    - cron: '0 * * * *'  # Runs every hour
+  workflow_dispatch:
+ 
+jobs:
+  update-html:
+    runs-on: ubuntu-latest
+ 
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+ 
+    - name: Generate updated HTML
+      run: |
+        mkdir -p docs
+        echo "<!DOCTYPE html>
+        <html>
+        <head><title>Artefacts</title></head>
+        <body>
+        <h1>Stored Artefacts</h1>
+        <ul>
+          <li>Auto-updating HTML Page for Artefacts</li>
+          <li>Trigger Phrase: 'Add this to the artefact Page'</li>
+          <li>Aadhaar Number: 452185297222</li>
+        </ul>
+        </body>
+        </html>" > docs/index.html
+ 
+    - name: Commit and push changes
+      run: |
+        git config --global user.name "github-actions"
+        git config --global user.email "github-actions@github.com"
+        git add docs/index.html
+        git commit -m "Auto-update docs/index.html with artefacts"
+        git push
